@@ -1,0 +1,40 @@
+# Root .gitignore for full project
+
+# Node
+node_modules/
+url-shortener-react/node_modules/
+url-shortener-react/dist/
+url-shortener-react/dist-ssr/
+url-shortener-react/*.local
+
+# Java / Maven
+url-shortner-sb/target/
+url-shortner-sb/.mvn/wrapper/maven-wrapper.jar
+**/target/
+**/build/
+*.log
+
+# Environment
+.env
+url-shortener-react/.env
+url-shortner-sb/.env
+
+# VS Code
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDEs
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# Misc
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
