@@ -7,13 +7,13 @@ import com.url.shortener.models.UrlMapping;
 import com.url.shortener.models.User;
 import com.url.shortener.repository.ClickEventRepository;
 import com.url.shortener.repository.UrlMappingRepository;
+import com.url.shortener.util.Base62Util;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
@@ -22,9 +22,6 @@ public class UrlMappingService {
 
     private UrlMappingRepository urlMappingRepository;
     private ClickEventRepository clickEventRepository;
-
-    private static final String BASE62 = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-
 
     public UrlMappingDTO createShortUrl(String originalUrl, User user) {
         UrlMapping urlMapping = new UrlMapping();
@@ -35,8 +32,8 @@ public class UrlMappingService {
         // First save: get DB-generated ID
         UrlMapping saved = urlMappingRepository.save(urlMapping);
 
-        // Base62 from ID
-        String shortUrl = generateShortUrl(saved.getId());
+        // Encode ID to Base62 short code
+        String shortUrl = Base62Util.encode(saved.getId());
         saved.setShortUrl(shortUrl);
 
         // Second save: persist short code
@@ -53,22 +50,6 @@ public class UrlMappingService {
         urlMappingDTO.setShortUrl(urlMapping.getShortUrl());
         urlMappingDTO.setClickCount(urlMapping.getClickCount());
         return urlMappingDTO;
-    }
-
-    private String generateShortUrl(Long id) {
-        if (id == null || id < 0) {
-            throw new IllegalArgumentException("ID must be non-null and non-negative");
-        }
-        if (id == 0) return "0";
-
-        StringBuilder sb = new StringBuilder();
-        long value = id;
-        while (value > 0) {
-            int rem = (int) (value % 62);
-            sb.append(BASE62.charAt(rem));
-            value /= 62;
-        }
-        return sb.reverse().toString();
     }
 
     public List<UrlMappingDTO> getUrlsByUser(User user){
