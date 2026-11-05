@@ -11,6 +11,7 @@
 [![Java](https://img.shields.io/badge/Java-21-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white)](https://www.oracle.com/java/)
 [![Spring Boot](https://img.shields.io/badge/Spring%20Boot-4.0.3-6DB33F?style=for-the-badge&logo=springboot&logoColor=white)](https://spring.io/projects/spring-boot)
 [![React](https://img.shields.io/badge/React-18-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev/)
+[![Tests](https://img.shields.io/badge/Tests-25%20passing-brightgreen?style=for-the-badge&logo=junit5)](url-shortner-sb/src/test/java/com/url/shortener/util/Base62UtilTest.java)
 
 </div>
 
@@ -25,6 +26,7 @@
 - [API Endpoints](#-api-endpoints)
 - [Getting Started](#-getting-started)
 - [Environment Variables](#-environment-variables)
+- [Testing](#-testing)
 - [Deployment](#-deployment)
 - [Project Structure](#-project-structure)
 
@@ -219,6 +221,33 @@ VITE_BACKEND_URL=http://localhost:8080
 VITE_REACT_FRONT_END_URL=http://localhost:5173
 VITE_REACT_SUBDOMAIN=http://localhost:5173
 ```
+
+---
+
+## 🧪 Testing
+
+The project includes **JUnit 5** unit tests for core business logic.
+
+### Running Tests
+
+```bash
+cd url-shortner-sb
+./mvnw test
+```
+
+### Test Coverage
+
+| Test Class | Tests | What is covered |
+|---|---|---|
+| [`Base62UtilTest`](url-shortner-sb/src/test/java/com/url/shortener/util/Base62UtilTest.java) | **25** | encode, decode, round-trip, edge cases & error handling |
+
+**Key scenarios tested:**
+- ✅ `encode(0)` → `"0"`, `encode(61)` → `"Z"`, `encode(62)` → `"10"`
+- ✅ Parameterised checks across known ID→code pairs
+- ✅ `decode` correctly reverses all encoded values
+- ✅ Round-trip: `decode(encode(id)) == id` for multiple IDs
+- ✅ `encode(null)` / `encode(-1)` → `IllegalArgumentException`
+- ✅ `decode("")` / `decode(null)` / invalid chars → `IllegalArgumentException`
 
 ---
 
